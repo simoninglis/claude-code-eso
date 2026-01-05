@@ -1,0 +1,112 @@
+# khal configuration
+# ~/.config/khal/config
+#
+# khal is a CLI calendar application that reads local calendar files
+# synced by vdirsyncer. Enables Claude Code calendar commands.
+
+[calendars]
+# Each calendar is stored in a directory synced by vdirsyncer
+# The section name becomes the calendar identifier
+
+[[personal]]
+path = ~/.config/khal/personal/
+color = light blue
+readonly = False
+
+[[work]]
+path = ~/.config/khal/work/
+color = light green
+readonly = False
+
+[[family]]
+path = ~/.config/khal/family/
+color = light magenta
+readonly = False
+
+# iCloud calendars (if synced)
+[[icloud_home]]
+path = ~/.config/khal/icloud/home/
+color = light cyan
+readonly = False
+
+[[icloud_work]]
+path = ~/.config/khal/icloud/work/
+color = yellow
+readonly = False
+
+# Read-only calendars (e.g., holidays)
+# [[holidays]]
+# path = ~/.config/khal/holidays/
+# color = light gray
+# readonly = True
+
+[default]
+# Default calendar for new events
+default_calendar = personal
+
+# Show all days in agenda view (not just days with events)
+show_all_days = True
+
+[locale]
+# Timezone settings
+local_timezone = Australia/Brisbane
+default_timezone = Australia/Brisbane
+# For US: America/New_York, America/Los_Angeles
+# For UK: Europe/London
+
+# Date/time format
+timeformat = %H:%M
+dateformat = %d/%m/%Y
+longdateformat = %A, %d %B %Y
+datetimeformat = %d/%m/%Y %H:%M
+longdatetimeformat = %A, %d %B %Y %H:%M
+
+# Week starts on Monday (0) or Sunday (6)
+firstweekday = 0
+
+# Show week numbers
+weeknumbers = right
+
+[view]
+# How to display events
+event_format = "{calendar-color}{start-end-time-style} {title}{reset}"
+agenda_event_format = "{calendar-color}{start-end-time-style} {title}{reset} [{calendar}]"
+
+##############################################
+# Usage
+##############################################
+#
+# List today's events:
+#   khal list
+#
+# List this week:
+#   khal list today 7d
+#
+# List specific date:
+#   khal list 2024-01-15
+#
+# Create event:
+#   khal new 2024-01-15 10:00 11:00 "Meeting with client"
+#   khal new tomorrow 14:00 15:00 "Call with vendor" -c work
+#
+# All-day event:
+#   khal new 2024-01-20 "Conference"
+#
+# Interactive calendar view:
+#   khal interactive
+#   khal calendar
+#
+# Search events:
+#   khal search "client"
+
+##############################################
+# Calendar Colors
+##############################################
+#
+# Available colors:
+#   black, white, brown, yellow, dark gray, dark green,
+#   dark blue, light gray, light green, light blue,
+#   light cyan, light red, light magenta, dark cyan,
+#   dark red, dark magenta
+#
+# Or RGB: #ff0000, #00ff00, #0000ff

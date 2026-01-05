@@ -1,0 +1,84 @@
+# notmuch configuration
+# Run: notmuch setup (interactive) or create ~/.notmuch-config
+#
+# notmuch indexes your Maildir for fast search, enabling:
+# - Full-text email search
+# - Tag-based organization (GTD workflow)
+# - Integration with Claude Code email commands
+
+[database]
+# Root directory for all mail (where mbsync puts it)
+path=/home/you/Maildir
+
+# Backup location for database
+backup_dir=/home/you/Maildir/.notmuch/backups
+
+[user]
+name=Your Name
+primary_email=you@example.com
+
+# Additional email addresses you receive mail at
+other_email=you@work.com;alias@example.com
+
+[new]
+# Tags applied to new messages
+tags=unread;inbox
+
+# Files to ignore during indexing (mbsync state files)
+ignore=.mbsyncstate;.uidvalidity;.mbsyncstate.lock;.mbsyncstate.new;.mbsyncstate.journal;
+
+[search]
+# Tags to exclude from default searches
+exclude_tags=deleted;spam
+
+[maildir]
+# Sync notmuch flags with Maildir flags
+synchronize_flags=true
+
+##############################################
+# Usage
+##############################################
+#
+# Initial setup:
+#   notmuch setup
+#   notmuch new
+#
+# Index new mail:
+#   notmuch new
+#
+# Search examples:
+#   notmuch search from:client@example.com
+#   notmuch search subject:invoice
+#   notmuch search folder:INBOX AND date:7days..
+#   notmuch search tag:action
+#
+# Tag operations:
+#   notmuch tag +action -inbox -- id:<message-id>
+#   notmuch tag +archive -inbox -- from:newsletter@example.com
+#
+# Show email:
+#   notmuch show id:<message-id>
+#
+# Count:
+#   notmuch count folder:INBOX
+#   notmuch count tag:unread
+
+##############################################
+# GTD Tag Taxonomy (recommended)
+##############################################
+#
+# Workflow tags:
+#   +inbox      - Unprocessed
+#   +action     - Needs my action
+#   +waiting    - Waiting for response
+#   +bacon      - Interesting FYI
+#
+# Reference tags:
+#   +vendors/name    - Vendor-specific
+#   +filing/type     - Filing category
+#   +archive         - Archived
+#
+# Status tags:
+#   +unread     - Unread
+#   +flagged    - Important
+#   +deleted    - Marked for deletion

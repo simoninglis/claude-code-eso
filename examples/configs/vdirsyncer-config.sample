@@ -1,0 +1,138 @@
+# vdirsyncer configuration
+# ~/.config/vdirsyncer/config
+#
+# vdirsyncer syncs calendars (CalDAV) and contacts (CardDAV) to local storage.
+# Enables khal (calendar) and khard (contacts) to work offline.
+
+[general]
+# Where vdirsyncer stores sync state
+status_path = "~/.config/vdirsyncer/status/"
+
+##############################################
+# Contacts - Personal (Fastmail)
+##############################################
+
+[pair personal_contacts]
+a = "personal_contacts_local"
+b = "personal_contacts_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname"]
+conflict_resolution = "b wins"
+
+[storage personal_contacts_local]
+type = "filesystem"
+path = "~/.config/khard/personal/"
+fileext = ".vcf"
+
+[storage personal_contacts_remote]
+type = "carddav"
+url = "https://carddav.fastmail.com/dav/addressbooks/user/you@example.com/Default"
+username = "you@example.com"
+# Use password manager
+password.fetch = ["command", "pass", "show", "fastmail/carddav"]
+
+##############################################
+# Calendar - Personal (Fastmail)
+##############################################
+
+[pair personal_calendar]
+a = "personal_calendar_local"
+b = "personal_calendar_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname", "color"]
+conflict_resolution = "b wins"
+
+[storage personal_calendar_local]
+type = "filesystem"
+path = "~/.config/khal/personal/"
+fileext = ".ics"
+
+[storage personal_calendar_remote]
+type = "caldav"
+url = "https://caldav.fastmail.com/dav/calendars/user/you@example.com/"
+username = "you@example.com"
+password.fetch = ["command", "pass", "show", "fastmail/caldav"]
+
+##############################################
+# Contacts - iCloud
+##############################################
+
+[pair icloud_contacts]
+a = "icloud_contacts_local"
+b = "icloud_contacts_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname"]
+conflict_resolution = "b wins"
+
+[storage icloud_contacts_local]
+type = "filesystem"
+path = "~/.config/khard/icloud/"
+fileext = ".vcf"
+
+[storage icloud_contacts_remote]
+type = "carddav"
+url = "https://contacts.icloud.com/"
+username = "your-apple-id@example.com"
+# iCloud requires app-specific password
+password.fetch = ["command", "pass", "show", "icloud/app-password"]
+
+##############################################
+# Calendar - iCloud
+##############################################
+
+[pair icloud_calendar]
+a = "icloud_calendar_local"
+b = "icloud_calendar_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname", "color"]
+conflict_resolution = "b wins"
+
+[storage icloud_calendar_local]
+type = "filesystem"
+path = "~/.config/khal/icloud/"
+fileext = ".ics"
+
+[storage icloud_calendar_remote]
+type = "caldav"
+url = "https://caldav.icloud.com/"
+username = "your-apple-id@example.com"
+password.fetch = ["command", "pass", "show", "icloud/app-password"]
+
+##############################################
+# Calendar - Google
+##############################################
+
+# [pair google_calendar]
+# a = "google_calendar_local"
+# b = "google_calendar_remote"
+# collections = ["from a", "from b"]
+# metadata = ["displayname", "color"]
+# conflict_resolution = "b wins"
+#
+# [storage google_calendar_local]
+# type = "filesystem"
+# path = "~/.config/khal/google/"
+# fileext = ".ics"
+#
+# [storage google_calendar_remote]
+# type = "google_calendar"
+# token_file = "~/.config/vdirsyncer/google-token"
+# client_id = "YOUR_CLIENT_ID.apps.googleusercontent.com"
+# client_secret = "YOUR_CLIENT_SECRET"
+
+##############################################
+# Usage
+##############################################
+#
+# Initial discovery:
+#   vdirsyncer discover
+#
+# Sync all:
+#   vdirsyncer sync
+#
+# Sync specific pair:
+#   vdirsyncer sync personal_contacts
+#   vdirsyncer sync personal_calendar
+#
+# Automate with systemd timer or cron:
+#   */15 * * * * vdirsyncer sync

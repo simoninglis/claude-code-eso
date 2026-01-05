@@ -1,0 +1,134 @@
+# Taskwarrior configuration
+# ~/.taskrc or ~/.config/task/taskrc
+#
+# Taskwarrior manages tasks with projects, tags, priorities, and due dates.
+# Integrates with Claude Code for email-to-task workflows.
+
+##############################################
+# Data Location
+##############################################
+
+data.location=~/.task
+
+##############################################
+# Sync Configuration (optional)
+##############################################
+
+# TaskChampion sync server (self-hosted or taskchampion.io)
+# sync.server.url=https://taskchampion.example.com
+# sync.server.client_id=YOUR_CLIENT_ID
+# sync.encryption_secret=YOUR_ENCRYPTION_SECRET
+
+# Or use Taskserver (older method)
+# taskd.server=taskd.example.com:53589
+# taskd.credentials=org/user/key
+# taskd.certificate=~/.task/cert.pem
+# taskd.key=~/.task/key.pem
+# taskd.ca=~/.task/ca.cert.pem
+
+##############################################
+# Default Behavior
+##############################################
+
+default.command=next
+
+##############################################
+# Urgency Coefficients
+##############################################
+
+# How much each factor contributes to urgency score
+urgency.user.project.coefficient=15.0
+urgency.due.coefficient=12.0
+urgency.blocking.coefficient=8.0
+urgency.priority.coefficient=6.0
+urgency.active.coefficient=4.0
+urgency.scheduled.coefficient=5.0
+urgency.age.coefficient=2.0
+urgency.annotations.coefficient=1.0
+urgency.tags.coefficient=1.0
+
+##############################################
+# Report Configuration
+##############################################
+
+report.next.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
+report.next.description=Most urgent tasks
+report.next.filter=status:pending -WAITING
+report.next.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
+
+##############################################
+# Color Configuration
+##############################################
+
+color=on
+color.due.today=color255
+color.due=color1
+color.overdue=color9
+color.active=rgb013
+
+##############################################
+# Aliases
+##############################################
+
+alias.burndown=burndown.weekly
+alias.ghistory=ghistory.monthly
+alias.history=history.monthly
+
+##############################################
+# Project Structure (recommended)
+##############################################
+#
+# Work
+# ├── Work.ClientA
+# ├── Work.ClientB
+# └── Work.Admin
+#
+# Finance
+# ├── Finance.Bills
+# ├── Finance.Budget
+# └── Finance.Tax
+#
+# Home
+# ├── Home.Maintenance
+# ├── Home.Cleaning
+# └── Home.Projects
+#
+# Personal
+# ├── Personal.Health
+# └── Personal.Learning
+
+##############################################
+# Tag Taxonomy (recommended)
+##############################################
+#
+# +email      - Task from email
+# +meeting    - Task from meeting
+# +waiting    - Blocked on someone
+# +urgent     - Needs immediate attention
+# +bills      - Bill payment
+# +recurring  - Repeating task
+# +client     - Client-related
+# +contract   - Contract-related
+
+##############################################
+# Usage
+##############################################
+#
+# Add task:
+#   task add "Review contract" project:Work.ClientA priority:H due:friday
+#
+# List by project:
+#   task project:Work list
+#
+# List by due date:
+#   task due:today list
+#   task due.before:eow list
+#
+# Complete task:
+#   task 42 done
+#
+# Modify task:
+#   task 42 modify due:tomorrow priority:H
+#
+# Annotate task:
+#   task 42 annotate "Waiting for client response"

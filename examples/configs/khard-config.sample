@@ -1,0 +1,117 @@
+# khard configuration
+# ~/.config/khard/khard.conf
+#
+# khard is a CLI contacts application that reads local vCard files
+# synced by vdirsyncer. Enables Claude Code contact lookup.
+
+[addressbooks]
+# Each addressbook is stored in a directory synced by vdirsyncer
+# The section name becomes the addressbook identifier
+
+[[personal]]
+path = ~/.config/khard/personal/
+color = light_blue
+
+[[work]]
+path = ~/.config/khard/work/
+color = light_green
+
+[[icloud]]
+path = ~/.config/khard/icloud/
+color = light_magenta
+
+# [[family]]
+# path = ~/.config/khard/family/
+# color = light_red
+
+[general]
+# Default action when khard is run without arguments
+default_action = list
+
+# Default addressbook for new contacts
+default_addressbook = personal
+
+# Editor for contact editing (uses $EDITOR if not set)
+# editor = vim
+# merge_editor = vimdiff
+
+# Path for private objects (like photos)
+# private_objects = Jabber, Skype, Twitter
+
+[contact table]
+# Fields shown in contact list
+display = formatted_name
+# Options: first_name, last_name, formatted_name, nickname
+
+# How to group contacts
+group_by_addressbook = yes
+
+# Reverse display order
+reverse = no
+
+# Show UIDs in list
+show_uids = no
+
+# Table format
+preferred_phone_number_type = cell, home, work
+preferred_email_address_type = home, work
+
+[vcard]
+# Search fields for contact lookup
+search_in_source_files = yes
+
+# vCard version for new contacts (3.0 or 4.0)
+preferred_version = 3.0
+
+# Show these fields when displaying a contact
+show_nicknames = yes
+show_emails = yes
+show_phone_numbers = yes
+show_addresses = yes
+show_birthday = yes
+show_anniversary = yes
+show_organisations = yes
+show_notes = no
+
+##############################################
+# Usage
+##############################################
+#
+# List all contacts:
+#   khard list
+#
+# Search contacts:
+#   khard list "John"
+#   khard list --search-in-source-files "company name"
+#
+# Show contact details:
+#   khard show "John Smith"
+#
+# Create new contact:
+#   khard new
+#   khard new -a work  # Add to work addressbook
+#
+# Edit contact:
+#   khard edit "John Smith"
+#
+# Export contact:
+#   khard export "John Smith"
+#
+# Phone lookup (for caller ID):
+#   khard phone "0412345678"
+#
+# Email lookup:
+#   khard email "john@example.com"
+#
+# Use with mutt:
+#   khard mutt --search "john"
+
+##############################################
+# Integration with notmuch/email
+##############################################
+#
+# Look up sender from email:
+#   khard list "sender@example.com"
+#
+# Add contact from email headers:
+#   notmuch show id:<message-id> | grep ^From: | khard add-email

@@ -1,0 +1,114 @@
+# mbsync configuration file
+# ~/.mbsyncrc or ~/.config/mbsync/config
+#
+# This syncs IMAP email to local Maildir format, enabling:
+# - Offline email access
+# - notmuch indexing and search
+# - CLI-based email workflows with Claude Code
+
+# Global options
+Create Both          # Create missing folders on both sides
+Expunge Both         # Delete on both sides when removed
+SyncState *          # Store sync state in each mailbox
+
+##############################################
+# Personal Account (Fastmail example)
+##############################################
+
+IMAPAccount personal
+Host imap.fastmail.com
+Port 993
+User you@example.com
+# Use a password manager command for security
+PassCmd "pass show email/personal-imap"
+# Or: PassCmd "security find-generic-password -s 'mbsync-personal' -w"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore personal-remote
+Account personal
+
+MaildirStore personal-local
+Path ~/Maildir/personal/
+Inbox ~/Maildir/personal/INBOX
+SubFolders Verbatim
+
+Channel personal
+Far :personal-remote:
+Near :personal-local:
+Patterns *
+CopyArrivalDate yes
+Sync All
+
+##############################################
+# Business Account
+##############################################
+
+IMAPAccount business
+Host imap.fastmail.com
+Port 993
+User business@example.com
+PassCmd "pass show email/business-imap"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore business-remote
+Account business
+
+MaildirStore business-local
+Path ~/Maildir/business/
+Inbox ~/Maildir/business/INBOX
+SubFolders Verbatim
+
+Channel business
+Far :business-remote:
+Near :business-local:
+Patterns *
+CopyArrivalDate yes
+Sync All
+
+##############################################
+# Gmail Account (different IMAP settings)
+##############################################
+
+# IMAPAccount gmail
+# Host imap.gmail.com
+# Port 993
+# User you@gmail.com
+# PassCmd "pass show email/gmail-app-password"
+# SSLType IMAPS
+# AuthMechs PLAIN
+#
+# IMAPStore gmail-remote
+# Account gmail
+#
+# MaildirStore gmail-local
+# Path ~/Maildir/gmail/
+# Inbox ~/Maildir/gmail/INBOX
+# SubFolders Verbatim
+#
+# Channel gmail
+# Far :gmail-remote:
+# Near :gmail-local:
+# # Gmail uses different folder names
+# Patterns * ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Drafts"
+# CopyArrivalDate yes
+# Sync All
+
+##############################################
+# Usage
+##############################################
+#
+# Sync all accounts:
+#   mbsync -a
+#
+# Sync specific account:
+#   mbsync personal
+#   mbsync business
+#
+# Run in background (recommended):
+#   systemctl --user enable mbsync.timer
+#   systemctl --user start mbsync.timer
+#
+# Or with cron:
+#   */15 * * * * mbsync -a

@@ -172,6 +172,30 @@ INBOX
   └─→ Archive/         # Old stuff → no task
 ```
 
+## Knowledge filing (PARA-based)
+
+I use a PARA structure for notes and documents. PARA = Projects, Areas, Resources, Archives (Tiago Forte's method).
+
+```
+vault/
+├── 00-Daily-Notes/      # Daily working notes (YYYY-MM-DD.md)
+├── 01-Projects/         # Active work with deadlines
+├── 02-Areas/            # Ongoing responsibilities (no end date)
+├── 03-Resources/        # Reference material
+├── 04-Archives/         # Completed or inactive items
+└── 09-Templates/        # Note templates
+```
+
+**Filing rules:**
+- Has a deadline or deliverable → Projects
+- Ongoing responsibility (health, finance, client relationship) → Areas
+- Reference material I might need later → Resources
+- Done or no longer relevant → Archives
+
+**Daily notes** tie everything together. I create one each day (`YYYY-MM-DD.md`) and link to meetings, tasks, and project notes from there.
+
+This structure works with Obsidian, Logseq, or any folder of Markdown files.
+
 ## Context management
 
 I load only what's needed for each task:

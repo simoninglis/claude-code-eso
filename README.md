@@ -1,62 +1,58 @@
-# Claude Code ESO
+# Claude Code ESO (Executive Support Officer)
 
-I use Claude Code as my personal Executive Support Officer — managing email, tasks, calendar, and knowledge through CLI tools.
+I use Claude Code to manage my email, tasks, calendar, and knowledge through CLI tools.
 
-## What's in this repo
+## Contents
 
 I keep the setup in `.claude/`. Copy it into your project for:
 - Slash commands for email processing and daily planning
-- Two-tier agent structure (coordinators + specialists)
+- Coordinators and specialists (a two-tier agent structure)
 - Path-scoped rules for email and tasks
-- Sample configs for all the tools
+- Sample configs for mbsync, notmuch, Taskwarrior, vdirsyncer, khal, and khard
 
 ## Who this is for
 
-This works well if you:
+Use this if you:
 - Use Claude Code regularly
 - Prefer CLI tools over web interfaces
-- Want local-first email, calendar, and task management
-- Are comfortable editing config files and running local sync tools
+- Want email, calendar, and task management stored locally
+- Are comfortable editing config files and running sync tools
 
-This probably isn't for you if you:
+This is not for you if you:
 - Need GUI applications
 - Prefer cloud-only services
-- Want something that works out of the box without configuration
+- Want zero configuration
 - Rely heavily on browser-based workflows
 
-## The philosophy
+## How it works
 
-I keep everything text-based, CLI-driven, and local.
+I keep everything as text that Claude Code can read directly:
 
-Instead of browser automation or complex MCP servers, I keep everything as text that Claude Code can read directly:
-
-- **Email** → Maildir + notmuch (local sync, fast search, tag-based filing)
+- **Email** → Maildir + notmuch (local sync, search, tag-based filing)
 - **Tasks** → Taskwarrior (CLI task management with projects and priorities)
 - **Calendar** → khal + vdirsyncer (local CalDAV sync)
 - **Contacts** → khard + vdirsyncer (local CardDAV sync)
-- **Knowledge** → Obsidian vault (Markdown files with YAML frontmatter)
+- **Knowledge** → Obsidian vault (Markdown files with YAML front matter)
 
-No browser DOM fighting. No token-heavy screenshots. Just text.
-
-## The two-tier agent structure
+## Coordinators and specialists
 
 I separate **what** needs to happen from **how** to use specific tools.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Domain coordinators                       │
-│  (Understand goals, delegate to specialists)                 │
-├─────────────────────────────────────────────────────────────┤
-│  finance-coordinator  │  work-coordinator  │  home-coordinator│
-└───────────────┬───────────────────────────────┬─────────────┘
-                │                               │
-                ▼                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Tool specialists                          │
-│  (Expert in specific tools, reused by all coordinators)      │
-├─────────────────────────────────────────────────────────────┤
-│  email-specialist  │  task-specialist  │  calendar-specialist │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│              Domain coordinators                  │
+│  (Understand goals, delegate to specialists)      │
+├──────────────────────────────────────────────────┤
+│  finance-coordinator  │  (add your own)          │
+└───────────────┬──────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────┐
+│              Tool specialists                     │
+│  (Know specific tools, reused by coordinators)   │
+├──────────────────────────────────────────────────┤
+│  email-specialist  │  task-specialist            │
+└──────────────────────────────────────────────────┘
 ```
 
 **Why I do it this way:**
@@ -69,7 +65,7 @@ I separate **what** needs to happen from **how** to use specific tools.
 ```
 .claude/
 ├── commands/
-│   ├── email-action-sweep.md    # GTD-based email processing
+│   ├── email-action-sweep.md    # Email processing (Getting Things Done workflow)
 │   └── start-of-day.md          # Morning planning workflow
 ├── agents/
 │   ├── coordinators/            # Domain coordinator examples
@@ -124,12 +120,10 @@ mbsync -a
 notmuch new
 ```
 
-### Option 3: Full stack
-
-Add calendar and contacts:
+### Option 3: Add calendar and contacts
 
 ```bash
-# Install (use pipx to avoid system Python issues)
+# Install pipx first if needed: sudo apt install pipx
 pipx install khal
 pipx install khard
 pipx install vdirsyncer
@@ -155,22 +149,24 @@ Morning planning:
 - Review email inbox status
 - Create or update Obsidian daily note
 
-### `/email-action-sweep [count]`
+### `/email-action-sweep [batch_size]`
 
-GTD-based email processing:
+Email processing using the Getting Things Done (GTD) workflow:
 - Fetch recent inbox emails
 - Categorise by action required
 - Create Taskwarrior tasks
 - File to GTD folders (Action, Waiting-For, Reference, Archive)
 
-## The GTD email workflow
+## Email filing (GTD-based)
+
+GTD = Getting Things Done, David Allen's productivity method. The core idea: decide what each email requires, then file it.
 
 ```
 INBOX
   │
   ├─→ Action/          # Needs my action → create task
   ├─→ Waiting-For/     # Blocked on someone → create task +waiting
-  ├─→ Bacon/           # Interesting FYI → no task
+  ├─→ Interesting/     # FYI, worth reading later → no task
   ├─→ Vendors/[Name]/  # Reference material → no task
   ├─→ Filing/[Type]/   # Records → no task
   └─→ Archive/         # Old stuff → no task
@@ -178,19 +174,17 @@ INBOX
 
 ## Context management
 
-The challenge is loading the right information at the right time, nothing more.
+I load only what's needed for each task:
 
-**Strategies I use:**
+1. **CLAUDE.md hierarchy** — I put CLAUDE.md files in subdirectories to scope context to specific domains.
 
-1. **CLAUDE.md hierarchy** — Drop CLAUDE.md files in subdirectories to scope context to specific domains.
+2. **Coordinators and specialists** — Coordinators load domain context, specialists load tool context. Never both at once.
 
-2. **Two-tier agents** — Coordinators load domain context, specialists load tool context. Never both at once.
+3. **Path-scoped rules** — Rules load only when working in relevant directories.
 
-3. **Path-scoped rules** — Load rules only when working in relevant directories.
+4. **Text-based tools** — Everything is searchable.
 
-4. **Text-based tools** — Everything is searchable and fast.
-
-## Parallel work pattern
+## Running multiple windows
 
 I run multiple Claude Code windows via tmux:
 
@@ -200,39 +194,39 @@ I run multiple Claude Code windows via tmux:
 # Window 3: Financial reconciliation
 ```
 
-Mental model: **I'm managing a small team, not using a tool.** Each window is a worker on a task. Some finish quickly, some need guidance. But I'm getting 3-4 things done in the time I'd normally do one.
+Each window handles one task. I check in on them, give guidance when needed, and move on.
 
-## Why not browser automation?
+## Browser automation
 
-Browser automation (Playwright, Chrome DevTools MCP) has been slow and unreliable in my experience. Screenshots burn context. DOM changes break workflows. Timing issues and popups cause failures.
+I tried browser automation (Playwright, Chrome DevTools MCP) and found it unreliable. Screenshots use up context tokens quickly. DOM changes break workflows. Timing issues cause failures.
 
-Text-based tools are faster, more stable, and scriptable. Your mileage may vary.
+Text-based tools have worked better for me. They're scriptable and don't require visual parsing.
 
-## Extending with MCP servers
+## MCP servers
 
-The text-first approach handles most workflows. Some tools need MCP integration:
+MCP (Model Context Protocol) lets Claude Code call external tools. Krisp, Jira, and Outlook require MCP:
 
 | Tool | MCP server | Use case |
 |------|-----------|----------|
-| **Krisp** | krisp-mcp | Meeting transcripts → action items |
-| **Atlassian JIRA** | jira-mcp | Issue tracking |
-| **Outlook** | outlook-mcp | Corporate environments where Maildir isn't an option |
+| Krisp | krisp-mcp | Meeting transcripts → action items |
+| Jira | jira-mcp | Issue tracking |
+| Outlook | outlook-mcp | Corporate environments where Maildir isn't an option |
 
-**How I handle MCP**: I create a specialist agent for each MCP tool. The specialist handles the MCP complexity; coordinators just delegate.
+I create a specialist agent for each MCP tool. The specialist handles the MCP complexity; coordinators just delegate.
 
-**Why subagents for MCP?** MCP tool calls generate verbose context — schema definitions, multiple API calls. Running them in subagents keeps that context isolated from your main work.
+MCP tool calls generate verbose context — schema definitions, multiple API calls. Running them in subagents keeps that context isolated from your main work.
 
 ## Privacy and security
 
-This setup processes your email, calendar, and tasks locally. Some things to consider:
+This setup processes your email, calendar, and tasks locally.
 
-- **Credentials**: Store IMAP/CalDAV passwords in a password manager, not plain text configs. The sample configs show how to use `pass` or similar.
+- **Credentials**: Store IMAP/CalDAV passwords in a password manager, not plain text configs. The sample configs show how to use `pass`.
 - **Obsidian vault**: Don't paste sensitive information into notes that Claude Code will read.
-- **Email content**: Claude Code will read email bodies during `/email-action-sweep`. Be aware of what's in your inbox.
+- **Email content**: Claude Code reads email bodies during `/email-action-sweep`. Be aware of what's in your inbox.
 
 ## Limitations
 
-This works well for text-heavy workflows with CLI-friendly tools. It's not great for GUI-only applications or workflows that genuinely need browser interaction.
+This setup is for text-heavy workflows with CLI tools. It doesn't help with GUI-only applications or workflows that require browser interaction.
 
 ## Requirements
 
@@ -242,7 +236,7 @@ This works well for text-heavy workflows with CLI-friendly tools. It's not great
 
 ## Contributing
 
-PRs welcome — I'm keen on:
+Pull requests welcome. I'm interested in:
 - Additional coordinator and specialist examples
 - More tool integrations
 - Documentation improvements
@@ -253,12 +247,6 @@ MIT
 
 ## Background
 
-This evolved from daily use managing multiple client engagements, email workflows, and knowledge across work and personal domains.
+This setup evolved from daily use managing email, tasks, and knowledge across work and personal domains. The coordinator/specialist split came from wanting to swap tools without rewriting everything.
 
-## Projects built with this approach
-
-- **Audit tools** — Python scripts that scan Maildir filing and flag gaps. Claude Code calls these to catch up on email admin.
-
-- **CLI wrappers** — Small tools that wrap APIs into commands Claude Code can call.
-
-- TriFold PDF (trifoldpdf.com) — A side project for printing Markdown as reference cards. I mention it because it's where I tested the coordinator/specialist split for a real product.
+I also use this approach for audit scripts that scan Maildir filing, CLI wrappers that turn APIs into commands, and a side project for printing Markdown as reference cards.

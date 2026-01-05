@@ -65,8 +65,9 @@ I separate **what** needs to happen from **how** to use specific tools.
 ```
 .claude/
 ├── commands/
-│   ├── email-action-sweep.md    # Email processing (Getting Things Done workflow)
-│   └── start-of-day.md          # Morning planning workflow
+│   ├── start-of-day.md          # Morning planning, creates daily note
+│   ├── end-of-day.md            # Evening review, updates daily note
+│   └── email-action-sweep.md    # Email processing (Getting Things Done workflow)
 ├── agents/
 │   ├── coordinators/            # Domain coordinator examples
 │   └── specialists/             # Tool specialist examples
@@ -149,6 +150,15 @@ Morning planning that creates a daily note and populates it:
 - Check calendar events
 - Review email inbox status
 - Link relevant items into the daily note
+
+### `/end-of-day`
+
+Evening review that updates the daily note:
+- Review completed tasks
+- Capture carried-forward items
+- Update timesheet status
+- Fill in reflection section
+- Set tomorrow's priorities
 
 ### `/email-action-sweep [batch_size]`
 

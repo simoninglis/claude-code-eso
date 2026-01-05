@@ -143,11 +143,12 @@ vdirsyncer sync
 
 ### `/start-of-day`
 
-Morning planning:
+Morning planning that creates a daily note and populates it:
+- Create daily note (`YYYY-MM-DD.md`) from template
 - Query tasks due today and high priority
 - Check calendar events
 - Review email inbox status
-- Create or update Obsidian daily note
+- Link relevant items into the daily note
 
 ### `/email-action-sweep [batch_size]`
 
@@ -192,7 +193,7 @@ vault/
 - Reference material I might need later → Resources
 - Done or no longer relevant → Archives
 
-**Daily notes** tie everything together. I create one each day (`YYYY-MM-DD.md`) and link to meetings, tasks, and project notes from there.
+**Daily notes** tie everything together. The `/start-of-day` command creates one each day (`YYYY-MM-DD.md`) and links to tasks, calendar events, and project notes.
 
 This structure works with Obsidian, Logseq, or any folder of Markdown files.
 

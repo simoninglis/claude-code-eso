@@ -1,0 +1,105 @@
+# Contacts Database
+# Used by slash commands for stakeholder context
+#
+# Commands that use this:
+# - /meeting-process: Identifies attendees, updates with new contacts
+# - /email-action-sweep: Recognises senders, suggests filing
+# - /email-reply-draft: Provides context for drafting responses
+
+contacts:
+  # Clients
+  - name: Jane Smith
+    organization: Acme Corp
+    role: Project Manager
+    email: jane.smith@acme.com
+    phone: 0400 123 456
+    notes: |
+      Primary contact for Website Redesign project
+      Prefers email over phone
+      Decision maker for budget approvals
+    tags:
+      - client
+      - acme
+      - primary-contact
+    first_contact: 2024-01-15
+    last_contact: 2024-03-20
+
+  - name: Bob Johnson
+    organization: Acme Corp
+    role: Technical Lead
+    email: bob.johnson@acme.com
+    phone:
+    notes: |
+      Technical decisions and integration questions
+      Reports to Jane Smith
+    tags:
+      - client
+      - acme
+      - technical
+    first_contact: 2024-02-01
+    last_contact: 2024-03-18
+
+  # Vendors
+  - name: Sarah Chen
+    organization: CloudHost Inc
+    role: Account Manager
+    email: sarah.chen@cloudhost.com
+    phone: 1300 123 456
+    notes: |
+      Manages hosting account
+      Escalation contact for outages
+    tags:
+      - vendor
+      - hosting
+      - account-manager
+    first_contact: 2023-06-01
+    last_contact: 2024-03-15
+
+  # Recruitment
+  - name: Mike Wilson
+    organization: TechRecruit
+    role: Recruitment Consultant
+    email: mike@techrecruit.com.au
+    phone: 0412 345 678
+    notes: |
+      Specialises in IT project management roles
+      Referred by LinkedIn connection
+    tags:
+      - recruitment
+      - job-search
+    first_contact: 2024-02-20
+    last_contact: 2024-03-01
+
+  # Network / Professional
+  - name: Alex Turner
+    organization: Previous Employer
+    role: Former Manager
+    email: alex.turner@gmail.com
+    phone:
+    notes: |
+      Reference contact
+      Monthly catch-up for industry updates
+    tags:
+      - network
+      - reference
+      - mentor
+    first_contact: 2020-03-15
+    last_contact: 2024-03-10
+
+# Field definitions:
+#
+# name: Full name (required)
+# organization: Company or organisation
+# role: Job title or relationship
+# email: Primary email address
+# phone: Phone number (optional)
+# notes: Free-form notes, context, history
+# tags: Categories for filtering
+# first_contact: Date of initial contact (YYYY-MM-DD)
+# last_contact: Date of most recent interaction (YYYY-MM-DD)
+#
+# Tags taxonomy:
+# - By relationship: client, vendor, recruitment, network, colleague
+# - By priority: primary-contact, escalation, decision-maker
+# - By domain: technical, finance, legal, sales
+# - By project: project-name, engagement-name

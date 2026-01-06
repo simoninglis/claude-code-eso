@@ -16,6 +16,7 @@ Parameters:
 1. Get current date: `date`
 2. Check inbox count: `notmuch count folder:INBOX`
 3. Ensure notmuch is indexed: `notmuch new` (only if needed)
+4. Load contacts database: Read `vault/03-Resources/contacts.yaml` or `docs/references/contacts.yaml`
 
 ### Step 1: Fetch Recent Emails
 Search recent inbox emails:
@@ -28,12 +29,27 @@ Display summary table showing:
 - From (name/email)
 - Subject (truncated to 60 chars)
 
-### Step 2: Identify Action Items
-Analyze each email for action indicators:
+### Step 2: Match Against Contacts
+
+For each email, check sender against contacts database:
+
+**Contact Match Found**:
+- Use `organization` to suggest filing folder (`Vendors/[org]/`)
+- Use `tags` to determine priority (client → high, vendor → medium)
+- Use `notes` for context on relationship
+- Use `role` to understand who you're dealing with
+
+**No Contact Match**:
+- Flag as potential new contact
+- Suggest adding after processing if recurring sender
+
+### Step 3: Identify Action Items
+Analyse each email for action indicators:
 
 **High Priority Indicators**:
 - Subject contains: "action required", "urgent", "asap", "deadline"
-- From known clients or important contacts
+- From known clients (check contacts with `client` tag)
+- From contacts tagged `primary-contact` or `decision-maker`
 - Subject contains: "invoice", "payment", "contract", "proposal"
 - Meeting requests or calendar items
 
@@ -48,7 +64,7 @@ Analyze each email for action indicators:
 - Marketing emails
 - System notifications
 
-### Step 3: Present Action Items
+### Step 4: Present Action Items
 Show categorized summary:
 ```
 ACTION REQUIRED EMAILS (X found in batch of Y)
@@ -68,7 +84,7 @@ CAN BE FILED:
 5-15 | [Various newsletters and notifications]
 ```
 
-### Step 4: Create Tasks for Action Items
+### Step 5: Create Tasks for Action Items
 For high and medium priority emails, suggest task creation:
 
 ```bash
@@ -81,7 +97,7 @@ task add project:Finance.Bills priority:H due:today "Process XYZ invoice" +invoi
 
 Ask user to confirm task creation or modify.
 
-### Step 5: Email Filing Recommendations
+### Step 6: Email Filing Recommendations
 
 **GTD Folder Structure**:
 ```
@@ -119,7 +135,7 @@ ARCHIVE (no task → Archive/):
 13-20: Old marketing emails
 ```
 
-### Step 6: Execute Filing
+### Step 7: Execute Filing
 
 Confirm before executing:
 ```
@@ -163,7 +179,7 @@ notmuch search --output=files id:[message-id] | \
 notmuch tag +vendors/[vendorname] -inbox -- id:[message-id]
 ```
 
-### Step 7: Provide Summary
+### Step 8: Provide Summary
 ```
 EMAIL ACTION SWEEP COMPLETE
 ===========================

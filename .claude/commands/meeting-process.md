@@ -17,7 +17,16 @@ Parameters:
 date "+%Y-%m-%d"
 ```
 
-### 2. Find Meeting
+### 2. Load Contacts Database
+
+Read contacts for attendee matching:
+```
+vault/03-Resources/contacts.yaml
+# or
+docs/references/contacts.yaml
+```
+
+### 3. Find Meeting
 
 If using Krisp MCP:
 ```
@@ -31,7 +40,19 @@ Or provide transcript directly from:
 - Meeting recording transcription
 - Manual notes
 
-### 3. Analyse Transcript
+### 4. Match Attendees to Contacts
+
+For each meeting participant:
+1. Search contacts by name
+2. If found: Pull `organization`, `role`, `notes` for context
+3. If not found: Flag as new contact to add
+
+**Benefits of contact matching**:
+- Accurate attendee details in meeting notes
+- Context from relationship history (`notes` field)
+- Correct organisation names and roles
+
+### 5. Analyse Transcript
 
 Extract:
 
@@ -48,7 +69,7 @@ Extract:
 - Questions raised
 - Blockers mentioned
 
-### 4. Create Meeting Note
+### 6. Create Meeting Note
 
 Save to: `vault/01-Projects/Meetings/YYYY-MM-DD-meeting-name.md`
 
@@ -109,7 +130,7 @@ Summary of discussion.
 Additional context or quotes.
 ```
 
-### 5. Create Tasks
+### 7. Create Tasks
 
 For each action item:
 ```bash
@@ -122,7 +143,26 @@ task add project:Work due:next-week "Research options discussed" +meeting
 - Include context from meeting
 - Add +meeting tag
 
-### 6. Summary
+### 8. Update Contacts
+
+For new attendees not in contacts database:
+```yaml
+- name: New Person
+  organization: Their Company
+  role: Their Role (from meeting intro)
+  email: if mentioned
+  notes: |
+    Met in [meeting name] on YYYY-MM-DD
+    Context from meeting
+  tags:
+    - client  # or vendor, colleague, etc.
+  first_contact: YYYY-MM-DD
+  last_contact: YYYY-MM-DD
+```
+
+For existing contacts, update `last_contact` date.
+
+### 9. Summary
 
 ```
 MEETING PROCESSED: Meeting Name

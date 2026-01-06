@@ -91,6 +91,10 @@ scripts/
 ├── audit-vault.py               # PARA structure compliance checker
 └── email-file.sh                # Email filing template
 
+docs/
+├── frontmatter-guide.md         # Frontmatter fields and standards
+└── contacts-guide.md            # Contacts database usage
+
 examples/
 ├── configs/
 │   ├── mbsyncrc.sample          # IMAP sync
@@ -100,7 +104,11 @@ examples/
 │   ├── khal-config.sample       # CLI calendar
 │   └── khard-config.sample      # CLI contacts
 ├── templates/
-│   └── daily-note.md            # Daily note template
+│   ├── daily-note.md            # Daily note template
+│   ├── project-note.md          # Project note template
+│   ├── meeting-note.md          # Meeting note template
+│   ├── area-note.md             # Area note template
+│   └── contacts.yaml            # Contacts database template
 └── claude-md-hierarchy/
     ├── root-CLAUDE.md           # Project root example
     ├── work-CLAUDE.md           # Work subdirectory example
@@ -254,9 +262,16 @@ Check Obsidian vault for PARA compliance:
 ```bash
 python scripts/audit-vault.py --vault ~/my-vault
 python scripts/audit-vault.py --level error  # Show only errors
+python scripts/audit-vault.py --level info   # Show all findings
 ```
 
-Validates folder structure, naming conventions, and frontmatter. Simplified version — extend for your own rules.
+Validates:
+- **Folder structure** — PARA folders exist (00-Daily-Notes, 01-Projects, etc.)
+- **Naming conventions** — Daily notes follow YYYY-MM-DD.md format
+- **Frontmatter presence** — Notes in Projects/Areas have frontmatter
+- **Filing hygiene** — Flags old daily notes for archiving
+
+See [docs/frontmatter-guide.md](docs/frontmatter-guide.md) for frontmatter standards and templates.
 
 ### `email-file.sh`
 
@@ -316,6 +331,31 @@ vault/
 **Daily notes** tie everything together. The `/start-of-day` command creates one each day (`YYYY-MM-DD.md`) and links to tasks, calendar events, and project notes.
 
 This structure works with Obsidian, Logseq, or any folder of Markdown files.
+
+## Contacts database
+
+A YAML contacts file gives commands context about the people you interact with:
+
+```yaml
+contacts:
+  - name: Jane Smith
+    organization: Acme Corp
+    role: Project Manager
+    email: jane.smith@acme.com
+    tags: [client, primary-contact]
+    notes: |
+      Primary contact for Website project
+      Prefers email over phone
+    last_contact: 2024-03-20
+```
+
+**How commands use contacts:**
+
+- `/email-action-sweep` — Matches senders to suggest filing folders and priority
+- `/meeting-process` — Identifies attendees, pulls their roles and context
+- Email drafting — Uses relationship notes for appropriate tone
+
+See [docs/contacts-guide.md](docs/contacts-guide.md) for the full field reference and `examples/templates/contacts.yaml` for a complete template.
 
 ## Context management
 

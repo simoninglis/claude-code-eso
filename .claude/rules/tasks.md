@@ -1,6 +1,8 @@
 # Task Management Rules
 
-Rules for Taskwarrior task management.
+Rules for the **task-specialist** agent. These rules define how to use Taskwarrior.
+
+**Coordinators**: Delegate task operations to task-specialist. Do not call `task` directly.
 
 ## Project Structure
 

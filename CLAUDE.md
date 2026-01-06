@@ -20,13 +20,47 @@ examples/
 └── configs/          # Sample tool configurations
 ```
 
+## Agent delegation rules
+
+**IMPORTANT**: Always delegate to specialist agents instead of calling tools directly.
+
+### When to delegate
+
+| Task | Delegate to | NOT direct calls to |
+|------|-------------|---------------------|
+| Email operations | email-specialist | notmuch, mbsync |
+| Task management | task-specialist | task (taskwarrior) |
+| Calendar queries | calendar-specialist | khal |
+| Note operations | obsidian-specialist | file read/write in vault |
+
+### Why delegate
+
+1. **Specialists know the tool** — They handle syntax, edge cases, and error recovery
+2. **Context isolation** — Tool output stays in the subagent, not your main context
+3. **Swap tools easily** — Change specialists without rewriting coordinators
+4. **Parallel execution** — Multiple specialists can run simultaneously
+
+### Example
+
+**Wrong** (calling tools directly):
+```
+notmuch search tag:inbox and date:today
+task project:Work list
+```
+
+**Right** (delegating to specialists):
+```
+"Use email-specialist to find today's inbox emails"
+"Use task-specialist to list Work project tasks"
+```
+
 ## Key patterns
 
 ### Two-tier architecture
 
 - **Coordinators** understand domains (finance, work, health)
 - **Specialists** understand tools (email, tasks, calendar)
-- Coordinators delegate to specialists
+- Coordinators delegate to specialists — never call tools directly
 
 ### Text-first approach
 

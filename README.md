@@ -68,7 +68,10 @@ I separate **what** needs to happen from **how** to use specific tools.
 │   ├── start-of-day.md          # Morning planning, creates daily note
 │   ├── end-of-day.md            # Evening review, updates daily note
 │   ├── email-action-sweep.md    # Email processing (GTD workflow)
-│   └── meeting-process.md       # Meeting transcript → notes + tasks
+│   ├── meeting-process.md       # Meeting transcript → notes + tasks
+│   ├── retro.md                 # Session retrospective, update CLAUDE.md
+│   ├── updatedocs.md            # Update project documentation
+│   └── claude-refactor.md       # Refactor CLAUDE.md to best practices
 ├── agents/
 │   ├── coordinators/
 │   │   ├── finance-coordinator.md
@@ -77,8 +80,16 @@ I separate **what** needs to happen from **how** to use specific tools.
 │       ├── email-specialist.md
 │       └── task-specialist.md
 └── rules/
-    ├── email.md                 # Email filing rules
-    └── tasks.md                 # Task management rules
+    ├── delegation.md            # When to use specialists vs direct calls
+    ├── email.md                 # Email filing rules (for email-specialist)
+    └── tasks.md                 # Task management rules (for task-specialist)
+
+scripts/
+├── check-claude-md-size.sh      # Monitor CLAUDE.md token usage
+├── md2clip.sh                   # Copy markdown to clipboard (WSL)
+├── md2clip.ps1                  # PowerShell clipboard helper
+├── audit-vault.py               # PARA structure compliance checker
+└── email-file.sh                # Email filing template
 
 examples/
 ├── configs/
@@ -186,6 +197,86 @@ Process meeting transcripts (from Krisp, Otter.ai, or manual notes):
 - Extract action items and decisions
 - Create structured meeting note in vault
 - Generate Taskwarrior tasks for follow-ups
+
+### `/retro`
+
+Session retrospective that updates CLAUDE.md with learnings:
+- Review new tools or commands discovered
+- Capture gotchas and their solutions
+- Document successful patterns
+- Identify reusable components or script opportunities
+
+### `/updatedocs`
+
+Update project documentation after a work session:
+- Capture new technical information
+- Document troubleshooting knowledge
+- Update setup or configuration guides
+- Add best practices discovered
+
+### `/claude-refactor`
+
+Refactor a project's CLAUDE.md to follow best practices:
+- Move detailed content to docs/ subdirectories
+- Extract rules to `.claude/rules/` for path-scoping
+- Keep CLAUDE.md under 500 lines as a "launch pad"
+- Maintain information integrity during migration
+
+## Scripts
+
+Helper scripts for common operations. These show the patterns I use — customise for your setup.
+
+### `check-claude-md-size.sh`
+
+Monitor CLAUDE.md token usage across your project:
+
+```bash
+./scripts/check-claude-md-size.sh
+```
+
+Checks global, project, and subdirectory CLAUDE.md files against recommended limits. Helps prevent context bloat.
+
+### `md2clip.sh` + `md2clip.ps1`
+
+Copy markdown to Windows clipboard with formatting preserved (for WSL users):
+
+```bash
+./scripts/md2clip.sh path/to/email-draft.md
+# Paste into Outlook with Ctrl+V
+```
+
+Converts markdown to RTF via pandoc, then copies to clipboard. Headings, bold, and lists survive the paste.
+
+### `audit-vault.py`
+
+Check Obsidian vault for PARA compliance:
+
+```bash
+python scripts/audit-vault.py --vault ~/my-vault
+python scripts/audit-vault.py --level error  # Show only errors
+```
+
+Validates folder structure, naming conventions, and frontmatter. Simplified version — extend for your own rules.
+
+### `email-file.sh`
+
+Template for batch email filing based on notmuch tags:
+
+```bash
+./scripts/email-file.sh --dry-run  # Preview what would be filed
+./scripts/email-file.sh            # Actually file emails
+```
+
+Edit the filing rules at the bottom to match your email categories.
+
+### Other scripts I use
+
+These aren't included but show what else is possible:
+
+- **Finance import** — Parse OFX files, categorise transactions, reconcile against Taskwarrior tasks
+- **Habitify sync** — Export habit data to Obsidian for weekly reviews
+- **Maildir audit** — Check for emails stuck in wrong folders, detect filing inconsistencies
+- **Calendar prep** — Generate meeting agendas from Obsidian notes and email threads
 
 ## Email filing (GTD-based)
 

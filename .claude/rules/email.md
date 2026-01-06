@@ -1,6 +1,8 @@
 # Email Rules
 
-Rules for email management with notmuch and Maildir.
+Rules for the **email-specialist** agent. These rules define how to use notmuch and Maildir.
+
+**Coordinators**: Delegate email operations to email-specialist. Do not call notmuch directly.
 
 ## Filing Strategy
 

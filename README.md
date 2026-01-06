@@ -67,21 +67,33 @@ I separate **what** needs to happen from **how** to use specific tools.
 ├── commands/
 │   ├── start-of-day.md          # Morning planning, creates daily note
 │   ├── end-of-day.md            # Evening review, updates daily note
-│   └── email-action-sweep.md    # Email processing (Getting Things Done workflow)
+│   ├── email-action-sweep.md    # Email processing (GTD workflow)
+│   └── meeting-process.md       # Meeting transcript → notes + tasks
 ├── agents/
-│   ├── coordinators/            # Domain coordinator examples
-│   └── specialists/             # Tool specialist examples
+│   ├── coordinators/
+│   │   ├── finance-coordinator.md
+│   │   └── work-coordinator.md
+│   └── specialists/
+│       ├── email-specialist.md
+│       └── task-specialist.md
 └── rules/
     ├── email.md                 # Email filing rules
     └── tasks.md                 # Task management rules
 
-examples/configs/
-├── mbsyncrc.sample              # IMAP sync
-├── notmuch-config.sample        # Email indexing
-├── taskrc.sample                # Task management
-├── vdirsyncer-config.sample     # Calendar/contact sync
-├── khal-config.sample           # CLI calendar
-└── khard-config.sample          # CLI contacts
+examples/
+├── configs/
+│   ├── mbsyncrc.sample          # IMAP sync
+│   ├── notmuch-config.sample    # Email indexing
+│   ├── taskrc.sample            # Task management
+│   ├── vdirsyncer-config.sample # Calendar/contact sync
+│   ├── khal-config.sample       # CLI calendar
+│   └── khard-config.sample      # CLI contacts
+├── templates/
+│   └── daily-note.md            # Daily note template
+└── claude-md-hierarchy/
+    ├── root-CLAUDE.md           # Project root example
+    ├── work-CLAUDE.md           # Work subdirectory example
+    └── finance-CLAUDE.md        # Finance subdirectory example
 ```
 
 ## Quick start
@@ -167,6 +179,13 @@ Email processing using the Getting Things Done (GTD) workflow:
 - Categorise by action required
 - Create Taskwarrior tasks
 - File to GTD folders (Action, Waiting-For, Reference, Archive)
+
+### `/meeting-process [name]`
+
+Process meeting transcripts (from Krisp, Otter.ai, or manual notes):
+- Extract action items and decisions
+- Create structured meeting note in vault
+- Generate Taskwarrior tasks for follow-ups
 
 ## Email filing (GTD-based)
 

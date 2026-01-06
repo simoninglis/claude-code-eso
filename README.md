@@ -299,6 +299,10 @@ Pull requests welcome. I'm interested in:
 
 MIT
 
+## Future direction
+
+I'm investigating replacing subagents with Claude Code skills. Skills may be more token-efficient and offer better context management since they run inline rather than spawning separate agents. The coordinator/specialist pattern would stay the same - just the implementation mechanism would change.
+
 ## Background
 
 This setup evolved from daily use managing email, tasks, and knowledge across work and personal domains. The coordinator/specialist split came from wanting to swap tools without rewriting everything.
